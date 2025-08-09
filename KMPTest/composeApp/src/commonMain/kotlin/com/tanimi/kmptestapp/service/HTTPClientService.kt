@@ -1,5 +1,6 @@
 package com.tanimi.kmptestapp.service
 
+import com.tanimi.kmptestapp.service.data.LineMessage
 import de.jensklingenberg.ktorfit.ktorfit
 
 import io.ktor.client.*
@@ -10,7 +11,7 @@ import kotlinx.serialization.json.Json
 
 class HTTPClientService {
 
-    val lineApi: LineApi
+    private val lineApi: LineApi
         get()  = ktorfit {
             baseUrl(LineApi.BASE_URL)
             httpClient(
@@ -27,7 +28,13 @@ class HTTPClientService {
             )
         }.createLineApi()
 
-    fun getLineMessage() {
-
+    suspend fun sendLineMessage(message: String) {
+        println("sendMessage")
+        val lineMessage = LineMessage(message)
+        try {
+            lineApi.sentMassage(lineMessage)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
