@@ -29,7 +29,6 @@ class HTTPClientService {
         }.createLineApi()
 
     suspend fun sendLineMessage(message: String) {
-        println("sendMessage")
         val lineMessage = LineMessage(message)
         try {
             lineApi.sentMassage(lineMessage)

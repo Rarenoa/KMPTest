@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.tanimi.kmptestapp.App
+import com.tanimi.kmptestapp.AppContext
 import com.tanimi.kmptestapp.viewmodel.LineApiViewModel
 
 class MainActivity : ComponentActivity() {
@@ -14,6 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        AppContext.apply { set(applicationContext) }
         setContent {
             App(viewModel = LineApiViewModel())
         }
