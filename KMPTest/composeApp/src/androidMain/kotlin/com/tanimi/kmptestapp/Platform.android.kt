@@ -6,6 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tanimi.kmptestapp.data.AppDatabase
 import java.lang.ref.WeakReference
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -31,4 +37,14 @@ actual fun getRoomDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
         context = appContext,
         name = dbFile.absolutePath
     )
+}
+
+@OptIn(ExperimentalUuidApi::class)
+actual fun getUuid(): String {
+    return Uuid.toString()
+}
+
+actual fun dateTimeStringNow(): String {
+    val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+    return sdf.format(Date())
 }

@@ -36,9 +36,9 @@ kotlin {
         getByName("commonMain") {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
-        getByName("androidMain") {
-            kotlin.srcDir("build/generated/ksp/android/androidMain/kotlin")
-        }
+//        getByName("androidMain") {
+//            kotlin.srcDir("build/generated/ksp/android/androidMain/kotlin")
+//        }
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -61,6 +61,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -99,8 +100,15 @@ dependencies {
     debugImplementation(compose.uiTooling)
     add("kspCommonMainMetadata", libs.ktorfit.ksp)
     add("kspAndroid", libs.ktorfit.ksp)
-    add("kspCommonMainMetadata", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.ktorfit.ksp)
+    add("kspIosX64", libs.ktorfit.ksp)
+    add("kspIosArm64", libs.ktorfit.ksp)
+
+//    add("kspCommonMainMetadata", libs.androidx.room.compiler)
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
 }
 
 room {
