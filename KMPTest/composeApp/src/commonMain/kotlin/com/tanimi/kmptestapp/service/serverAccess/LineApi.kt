@@ -1,11 +1,9 @@
-package com.tanimi.kmptestapp.service
+package com.tanimi.kmptestapp.service.serverAccess
 
-import com.tanimi.kmptestapp.service.data.LineMessage
+import com.tanimi.kmptestapp.service.serverAccess.data.LineMessage
 import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
-import de.jensklingenberg.ktorfit.http.Path
 
 interface LineApi {
     companion object {

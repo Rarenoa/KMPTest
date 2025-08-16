@@ -1,6 +1,7 @@
-package com.tanimi.kmptestapp.service
+package com.tanimi.kmptestapp.service.serverAccess
 
-import com.tanimi.kmptestapp.service.data.LineMessage
+import com.tanimi.kmptestapp.service.createLineApi
+import com.tanimi.kmptestapp.service.serverAccess.data.LineMessage
 import de.jensklingenberg.ktorfit.ktorfit
 
 import io.ktor.client.*

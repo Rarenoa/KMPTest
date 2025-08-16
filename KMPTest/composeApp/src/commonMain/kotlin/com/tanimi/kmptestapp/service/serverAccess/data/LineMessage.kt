@@ -1,4 +1,4 @@
-package com.tanimi.kmptestapp.service.data
+package com.tanimi.kmptestapp.service.serverAccess.data
 
 import kotlinx.serialization.Serializable
 

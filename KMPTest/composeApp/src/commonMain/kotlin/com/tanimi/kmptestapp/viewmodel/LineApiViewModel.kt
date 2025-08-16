@@ -1,12 +1,11 @@
 package com.tanimi.kmptestapp.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.tanimi.kmptestapp.data.entity.MessageHistory
 import com.tanimi.kmptestapp.data.getRoomDatabase
 import com.tanimi.kmptestapp.dateTimeStringNow
 import com.tanimi.kmptestapp.getRoomDatabaseBuilder
 import com.tanimi.kmptestapp.getUuid
-import com.tanimi.kmptestapp.service.HTTPClientService
+import com.tanimi.kmptestapp.service.serverAccess.HTTPClientService
 import com.tanimi.kmptestapp.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
