@@ -1,5 +1,6 @@
 package com.tanimi.kmptestapp
 
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.room.RoomDatabase
 import com.tanimi.kmptestapp.data.AppDatabase
 import com.tanimi.kmptestapp.service.ocr.OCRService
@@ -17,3 +18,7 @@ expect fun getUuid(): String
 expect fun dateTimeStringNow(): String
 
 expect class OCRServiceImpl(): OCRService
+
+expect fun readFileAsByteArray(path: String): ByteArray
+expect fun saveFile(path: String, bytes: ByteArray)
+expect fun ByteArray.toImageBitmap(): ImageBitmap

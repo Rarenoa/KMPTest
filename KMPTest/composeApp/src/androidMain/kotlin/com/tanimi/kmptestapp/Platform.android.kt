@@ -1,8 +1,11 @@
 package com.tanimi.kmptestapp
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.google.mlkit.vision.common.InputImage
@@ -10,11 +13,11 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.tanimi.kmptestapp.data.AppDatabase
 import com.tanimi.kmptestapp.service.ocr.OCRService
+import java.io.File
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -68,5 +71,32 @@ actual class OCRServiceImpl: OCRService {
                 .addOnFailureListener { cont.resumeWithException(it) }
         }
     }
+}
+
+actual fun readFileAsByteArray(path: String): ByteArray {
+    val file = File(AppContext.get().filesDir, path)
+
+    val a = file.absolutePath
+    if (file.exists()) {
+        println("Upload Found file: ${file.absolutePath}")
+    } else {
+        println("UploadFile not found at: ${file.absolutePath}")
+    }
+    return file.readBytes()
+}
+
+actual fun saveFile(path: String, bytes: ByteArray) {
+    val file = File(AppContext.get().filesDir, path)
+    if (file.parentFile == null) {
+        file.parentFile?.mkdir()
+    }
+    val path = file.absolutePath
+    file.writeBytes(bytes)
+}
+
+actual fun ByteArray.toImageBitmap(): ImageBitmap {
+    val bitmap = BitmapFactory.decodeByteArray(this, 0, size)
+        ?: throw IllegalArgumentException("Failed to decode ByteArray to Bitmap")
+    return bitmap.asImageBitmap()
 }
 

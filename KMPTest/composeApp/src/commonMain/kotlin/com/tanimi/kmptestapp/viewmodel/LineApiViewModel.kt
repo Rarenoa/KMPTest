@@ -1,11 +1,16 @@
 package com.tanimi.kmptestapp.viewmodel
 
+import androidx.compose.ui.graphics.ImageBitmap
 import com.tanimi.kmptestapp.data.entity.MessageHistory
 import com.tanimi.kmptestapp.data.getRoomDatabase
 import com.tanimi.kmptestapp.dateTimeStringNow
 import com.tanimi.kmptestapp.getRoomDatabaseBuilder
 import com.tanimi.kmptestapp.getUuid
+import com.tanimi.kmptestapp.readFileAsByteArray
+import com.tanimi.kmptestapp.saveFile
 import com.tanimi.kmptestapp.service.serverAccess.HTTPClientService
+import com.tanimi.kmptestapp.service.serverAccess.api.UploadImageType
+import com.tanimi.kmptestapp.toImageBitmap
 import com.tanimi.kmptestapp.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,5 +46,24 @@ class LineApiViewModel(
         viewModelScope.launch {
             messageHistoryDao.insert(history)
         }
+    }
+
+    fun uploadImage() {
+        viewModelScope.launch {
+            httpClientService.uploadImage("data/data/com.tanimi.kmptestapp/files/スクリーンショット.jpeg", UploadImageType.Jpeg)
+        }
+    }
+
+    fun downloadImage(fileName: String = "test.png") {
+        viewModelScope.launch {
+            val image = httpClientService.downloadImage(fileName)
+            if (image != null) {
+                saveFile("downloaded.png", image)
+            }
+        }
+    }
+
+    fun getImage(): ByteArray {
+        return readFileAsByteArray("downloaded.png")
     }
 }

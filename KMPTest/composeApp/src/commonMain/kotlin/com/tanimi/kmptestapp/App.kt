@@ -1,5 +1,6 @@
 package com.tanimi.kmptestapp
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -26,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -109,7 +112,6 @@ fun MainScreen(onNavigate: (String) -> Unit) {
 @Preview
 fun LineScreen(onBack: () -> Unit, viewModel: LineApiViewModel = LineApiViewModel()) {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
         var message by remember { mutableStateOf("") }
         Column(
             modifier = Modifier
@@ -125,12 +127,14 @@ fun LineScreen(onBack: () -> Unit, viewModel: LineApiViewModel = LineApiViewMode
                     .background(Color.Transparent)
             )
             Button(onClick = {
-                showContent = !showContent
-                viewModel.sendLineMessage(message)
-                viewModel.saveMessage(message)
+//                viewModel.sendLineMessage(message)
+//                viewModel.saveMessage(message)
+//                viewModel.uploadImage()
+                viewModel.downloadImage()
             }) {
                 Text("送信")
             }
+            ByteArrayImageScreen(imageBytes = viewModel.getImage())
         }
     }
 }
@@ -209,6 +213,36 @@ fun answerItem(history: AnswerHistory) {
             Text("Q: ${history.question}", style = MaterialTheme.typography.bodyLarge)
             Text("A: ${history.answer}", style = MaterialTheme.typography.bodyMedium)
             Text("日時: ${history.created}", style = MaterialTheme.typography.labelSmall)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ByteArrayImageScreen(imageBytes: ByteArray) {
+    var bitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    LaunchedEffect(imageBytes) {
+        bitmap = imageBytes.toImageBitmap()
+    }
+
+    Scaffold(
+        topBar = { TopAppBar(title = { Text("Image Preview") }) }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            bitmap?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = "Downloaded image",
+                    modifier = Modifier.size(250.dp)
+                )
+            } ?: Text("Loading image...")
         }
     }
 }

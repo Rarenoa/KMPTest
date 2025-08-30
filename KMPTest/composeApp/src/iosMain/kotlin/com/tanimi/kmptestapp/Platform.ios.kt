@@ -1,5 +1,6 @@
 package com.tanimi.kmptestapp
 
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tanimi.kmptestapp.common.Constant
@@ -19,6 +20,9 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUUID
 import platform.Foundation.NSUserDomainMask
+import platform.Foundation.*
+import kotlinx.cinterop.*
+
 
 class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
@@ -71,4 +75,30 @@ actual class OCRServiceImpl: OCRService {
             }
         }
     }
+}
+
+@OptIn(ExperimentalForeignApi::class)
+actual fun readFileAsByteArray(path: String): ByteArray {
+    val nsData = NSData.dataWithContentsOfFile(path) ?: throw Exception("File not found")
+    val bytes = nsData.bytes?.reinterpret<ByteVar>() ?: throw Exception("Empty file")
+    return ByteArray(nsData.length.toInt()) { bytes[it] }
+}
+
+
+actual fun saveFile(path: String, bytes: ByteArray) {
+    val data = NSData.create(bytes = bytes, length = bytes.size.toULong())
+    data.writeToFile(getDocumentsPath(path), atomically = true)
+}
+
+private fun getDocumentsPath(fileName: String): String {
+    val paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)
+    val documentsDir = paths.first() as String
+    return "$documentsDir/$fileName"
+}
+
+actual fun ByteArray.toImageBitmap(): ImageBitmap {
+    val data = NSData.create(bytes = this, length = size.toULong())
+    val uiImage = UIImage.dataToUIImage(data) ?: throw IllegalArgumentException("Failed to decode ByteArray")
+    val cgImage: CGImage = uiImage.CGImage ?: throw IllegalArgumentException("UIImage.CGImage is null")
+    return ImageBitmapImage(cgImage) // Compose iOS 用に変換
 }
