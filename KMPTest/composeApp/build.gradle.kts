@@ -36,9 +36,6 @@ kotlin {
         getByName("commonMain") {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
-//        getByName("androidMain") {
-//            kotlin.srcDir("build/generated/ksp/android/androidMain/kotlin")
-//        }
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -52,6 +49,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.navigation)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktorfit)

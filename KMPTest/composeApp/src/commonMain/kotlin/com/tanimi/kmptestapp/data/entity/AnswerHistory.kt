@@ -7,8 +7,9 @@ import kotlin.uuid.ExperimentalUuidApi
 
 @Serializable
 @Entity
-data class MessageHistory @OptIn(ExperimentalUuidApi::class) constructor(
+data class AnswerHistory @OptIn(ExperimentalUuidApi::class) constructor(
     @PrimaryKey val id: String,
-    val message: String,
+    val question: String,
+    val answer: String,
     val created: String
 )

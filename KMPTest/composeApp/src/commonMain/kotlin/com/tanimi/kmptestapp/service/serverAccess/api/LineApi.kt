@@ -1,4 +1,4 @@
-package com.tanimi.kmptestapp.service.serverAccess
+package com.tanimi.kmptestapp.service.serverAccess.api
 
 import com.tanimi.kmptestapp.service.serverAccess.data.LineMessage
 import de.jensklingenberg.ktorfit.http.Body

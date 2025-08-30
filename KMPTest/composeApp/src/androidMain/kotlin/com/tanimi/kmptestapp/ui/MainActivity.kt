@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 
         AppContext.apply { set(applicationContext) }
         setContent {
-            App(viewModel = LineApiViewModel())
+            App()
         }
     }
 }
@@ -25,5 +25,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App(viewModel = LineApiViewModel())
+    App()
 }
